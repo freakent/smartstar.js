@@ -1,0 +1,17 @@
+{
+  "name": "xmaslights",
+  "version": "0.0.0",
+  "description": "Twitter controlled Christmas lights",
+  "main": "index.js",
+  "scripts": {
+    "test": "tests.js"
+  },
+  "repository": "",
+  "author": "Martin Jarvis",
+  "license": "BSD",
+  "dependencies": {
+    "ntwitter": "~0.4.1",
+    "sugar": "~1.3.0",
+    "mqttjs": "~0.1.7"
+  }
+}
