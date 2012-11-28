@@ -34,6 +34,15 @@ var client = mqtt.createClient(port, host, function(err, client) {
   });
 
   setInterval(function(){client.publish({topic: "ping", payload: "ping"})}, 10 * 60 * 1000);
+
+var date = new Date();
+if (date.getHours() >= 17 && date.getHours() < 23) {
+    client.publish({topic: topic, payload: "ON"});
+    console.log('Switch lights on');
+} else {
+    client.publish({topic: topic, payload: "OFF"});
+    console.log('Switch lights off');
+}
   
 });
 
@@ -64,12 +73,12 @@ twitter.stream('statuses/filter', {track:'cheerlights blue,cheerlights green,che
 
 //setInterval(function(){console.log(twitter)}, 30000);
 
-new cronJob('00 30 19 * * *', function(){
+new cronJob('00 00 17 * * *', function(){
     client.publish({topic: topic, payload: "ON"});
     console.log('Switch lights on');
 }, null, true);
 
-new cronJob('00 00 22 * * *', function(){
+new cronJob('00 30 22 * * *', function(){
     client.publish({topic: topic, payload: "OFF"});
     console.log('Switch lights off');
 }, null, true);
