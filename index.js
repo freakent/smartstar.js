@@ -71,10 +71,22 @@ function open_twitter_stream(mqtt_client) {
 	twitter.stream('statuses/filter', {track:'cheerlights blue,cheerlights green,cheerlights purple, cheerlights'}, function(stream) {
 
 		stream.on('data', function (data) {
-			var pattern = data.text.toUpperCase().each(/\b(red|blue|green|purple)\b/i, function(color) {return color.first()}).join(""); 
-			if (pattern.length > 0) {
-				util.log(pattern + " - " + data.text);
-				mqtt_client.publish({topic: topic, payload: "CHEER " + pattern});
+		  if (data.text == undefined) {
+		    util.log("Unexpected data object received %s", data);
+		  } else {
+			  var input = data.text.toUpperCase().each(/\b(red|blue|green|purple)\b/i, function(color) {return color.first()}).join(""); 
+			  var pattern = [];
+			  for(x=0; x < input.length; x++) {
+          pattern.push(input.charAt(x));
+          if (input.charAt(x) == input.charAt(x+1)) {
+            pattern.push(" ");
+          }
+        }
+
+			  if (pattern.length > 0) {
+				  util.log(pattern.join("") + " - " + data.text);
+				  mqtt_client.publish({topic: topic, payload: "CHEER " + pattern.join("")});
+				}
 			}
 		});
 	
